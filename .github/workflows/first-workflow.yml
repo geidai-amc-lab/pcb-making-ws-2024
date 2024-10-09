@@ -1,29 +1,21 @@
-name: CI Workflow
+name: Sync to Organization Repo
 
-# ワークフローのトリガー条件。ここでは、mainブランチにpushされたときに実行。
 on:
   push:
     branches:
-      - main
+      - main  # 監視するブランチを指定
 
-# ジョブの定義
 jobs:
-  build:
-    runs-on: ubuntu-latest  # ジョブが実行される環境
+  sync_repo:
+    runs-on: ubuntu-latest
+
     steps:
-      # リポジトリのコードをチェックアウト
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Node.jsをセットアップして、テストを実行
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run tests
-        run: npm test
-
+      - name: Push to Organization Repo
+        run: |
+          git remote add org-origin git@github.com:geidai-amc-lab/pcb-making-ws-2024.git
+          git push org-origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
