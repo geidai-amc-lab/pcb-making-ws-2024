@@ -1,21 +1,26 @@
-name: Sync to Organization Repo
+name: Push to Organization Repo
 
 on:
   push:
     branches:
-      - main  # 監視するブランチを指定
+      - main
 
 jobs:
-  sync_repo:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Push to Organization Repo
+      - name: Set up Git for pushing to Org repo
         run: |
-          git remote add org-origin git@github.com:geidai-amc-lab/pcb-making-ws-2024.git
-          git push org-origin main
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Push to Organization Repo
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_PAT: ${{ secrets.ORG_PAT }}
+        run: |
+          git remote add org-origin https://x-access-token:${{ secrets.ORG_PAT }}@github.com/geidai-amc-lab/pcb-making-ws-2024.git
+          git push org-origin main
