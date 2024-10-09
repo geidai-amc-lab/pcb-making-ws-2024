@@ -15,8 +15,8 @@ jobs:
 
       - name: Set up Git for pushing to Org repo
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name "ytr0"
+          git config --global user.email "yu20@iamas.ac.jp"
 
       - name: Push to Organization Repo
         env:
